@@ -14,7 +14,6 @@
 
     let vimMode = 'insert'; // 'insert' | 'normal'
     let activeInput = null;
-    let activeInputCopy = null;
     let indicator = null;
 
     function updateIndicator() {
@@ -54,15 +53,6 @@
 
                 vimMode = 'normal';
                 updateIndicator();
-
-                // some textarea(eg. jira comment editor) will handle esc keydown and focus out,
-                // 300 ms re-focus is a little bit tricky, but it works.
-                setTimeout(() => {
-                    if(activeInputCopy != null) {
-                        console.log("force focus on the target input")
-                        activeInputCopy.focus()
-                    }
-                }, 300)
             }
             return;
         }
@@ -125,8 +115,6 @@
     document.addEventListener('focusin', (e) => {
         console.log("focusin triggered")
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-            // if a new focusin occured, don't forget to clean the copy of the last input to avoid timeout callback focusing on the last inupt
-            activeInputCopy = null;
             activeInput = e.target;
             //  vimMode = 'insert';
             //  updateIndicator();
@@ -137,9 +125,7 @@
 
     document.addEventListener('focusout', (e) => {
         if (e.target === activeInput) {
-            // when input focus out by editor mode swithing listener, give it a chance for our timeout callback to re-focus
             console.log("focus out triggered")
-            activeInputCopy = activeInput
             activeInput = null;
         }
     });
