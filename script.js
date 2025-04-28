@@ -34,7 +34,6 @@
                     console.log("fontVariantLigatures = " + "unset" )
                     activeInput.style.caretColor="#000000" /* modern bright color */
                 }
-                
             }
         }
     }
@@ -75,56 +74,39 @@
         }
 
         if (vimMode === 'command') {
+            const value = activeInput.value;
+            let pos = activeInput.selectionStart;
+
             if (e.key === 'i') {
-                e.preventDefault();
                 vimMode = 'insert';
                 updateIndicator();
                 return;
             }
 
-            const value = activeInput.value;
-            let pos = activeInput.selectionStart;
-
-            if (e.key === 'w') {
+            // avoid blocking system shortcut, eg. select all, copy, paste, cut, undo...
+            const isSystemShortcuts = (e.ctrlKey || e.metaKey) && ['a', 'c', 'v', 'x', 'z', 'y', 'p', 's'].includes(e.key.toLowerCase())
+            if (!isSystemShortcuts) {
+                // block input for all other non-system comb
                 e.preventDefault();
-                while (pos < value.length && !/\w/.test(value[pos])) pos++;
-                while (pos < value.length && /\w/.test(value[pos])) pos++;
-                activeInput.setSelectionRange(pos, pos);
             }
 
             if (e.key === 'e') {
                 console.log("word forward triggered")
-
-                e.preventDefault();
                 while (pos < value.length && !/\w/.test(value[pos])) pos++;
                 while (pos < value.length && /\w/.test(value[pos])) pos++;
-                // if (pos > 0) pos--;
                 activeInput.setSelectionRange(pos, pos);
-            }
-
-            if (e.key === 'b') {
-                console.log("word backword triggered")
-                e.preventDefault();
+            } else if (e.key === 'b') {
+                console.log("word backward triggered")
                 if (pos > 0) pos--;
                 while (pos > 0 && !/\w/.test(value[pos])) pos--;
                 while (pos > 0 && /\w/.test(value[pos-1])) pos--;
                 activeInput.setSelectionRange(pos, pos);
-            }
-
-            if (e.key === 'h') {
-                e.preventDefault();
+            } else if (e.key === 'h') {
                 if (pos > 0) pos--;
                 activeInput.setSelectionRange(pos, pos);
-            }
-
-            if (e.key === 'l') {
-                e.preventDefault();
+            } else if (e.key === 'l') {
                 if (pos < value.length) pos++;
                 activeInput.setSelectionRange(pos, pos);
-            }
-
-            if (!['w', 'e', 'b', 'h', 'l', 'i'].includes(e.key)) {
-                e.preventDefault();
             }
         }
     }
