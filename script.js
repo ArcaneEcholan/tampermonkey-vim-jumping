@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      2025-04-28
 // @description  try to take over the world!
-// @author       You
+// @author       https://github.com/ArcaneEcholan
 // @match        *://*/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        none
@@ -12,13 +12,30 @@
 (function() {
     'use strict';
 
-    let vimMode = 'insert'; // 'insert' | 'normal'
+    let vimMode = 'insert'; // 'insert' | 'command'
     let activeInput = null;
     let indicator = null;
 
     function updateIndicator() {
         if (indicator) {
-            indicator.textContent = vimMode === 'insert' ? '-- INSERT --' : '-- NORMAL --';
+            indicator.textContent = vimMode === 'insert' ? '-- INSERT --' : '-- COMMAND --';
+            indicator.style.background = vimMode === 'insert' ? 'rgba(139, 139, 139, 0.7)' :'rgba(255, 0, 96, 1)';
+
+            if(activeInput != null) {
+                if(vimMode === 'command') {
+                    console.log("update care style:")
+                    console.log("caretColor = " + "#00bfff" )
+                    console.log("fontVariantLigatures = " + "#none" )
+                    activeInput.style.caretColor="rgba(255, 0, 96, 1)" /* modern bright color */
+                }
+                if(vimMode === 'insert') {
+                    console.log("update care style:")
+                    console.log("caretColor = " + "unset" )
+                    console.log("fontVariantLigatures = " + "unset" )
+                    activeInput.style.caretColor="#000000" /* modern bright color */
+                }
+                
+            }
         }
     }
 
@@ -27,7 +44,7 @@
         indicator.style.position = 'fixed';
         indicator.style.bottom = '10px';
         indicator.style.right = '10px';
-        indicator.style.background = 'rgba(0,0,0,0.7)';
+        indicator.style.background =  'rgba(139, 139, 139, 0.7)';
         indicator.style.color = 'white';
         indicator.style.padding = '4px 8px';
         indicator.style.borderRadius = '4px';
@@ -51,13 +68,13 @@
                 console.log("mode switching triggered, the active input now is:")
                 console.log(activeInput)
 
-                vimMode = 'normal';
+                vimMode = 'command';
                 updateIndicator();
             }
             return;
         }
 
-        if (vimMode === 'normal') {
+        if (vimMode === 'command') {
             if (e.key === 'i') {
                 e.preventDefault();
                 vimMode = 'insert';
