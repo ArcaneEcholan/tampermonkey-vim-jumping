@@ -46,10 +46,10 @@
 
 
         if (vimMode === 'insert') {
-            if (e.key === 'Escape') {
+            if (e.key === ';' && e.ctrlKey) {
                 e.preventDefault();
 
-                console.log("esc triggered, the active input now is:")
+                console.log("mode switching triggered, the active input now is:")
                 console.log(activeInput)
 
                 vimMode = 'normal';
@@ -137,7 +137,7 @@
 
     document.addEventListener('focusout', (e) => {
         if (e.target === activeInput) {
-            // when input focus out by editor esc listener, give it a chance for our timeout callback to re-focus
+            // when input focus out by editor mode swithing listener, give it a chance for our timeout callback to re-focus
             console.log("focus out triggered")
             activeInputCopy = activeInput
             activeInput = null;
