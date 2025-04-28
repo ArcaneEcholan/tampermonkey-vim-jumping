@@ -1,7 +1,10 @@
-A tampermonkey plugin that mimic vim work jumping behaviour.
+A tampermonkey plugin that let you jump word on html input like vim.
 
-Currently support:
-* esc: when in "insert" mode, switch to "normal" mode
-* i: when in "normal" mode, swith to "insert" mode
-* e: forward jump word
-* b: backward jump word
+| Command  | Description                          |
+| -------- | ------------------------------------ |
+| ctrl + ; | switch to "command" mode             |
+| i        | swith to "insert" mode               |
+| e        | [command] word jumping, forward(->)  |
+| b        | [command] word jumping, backward(<-) |
+| h        | [command] single step move left      |
+| l        | [command] single step move right     |
