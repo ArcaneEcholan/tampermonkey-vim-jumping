@@ -125,6 +125,8 @@
     document.addEventListener('focusin', (e) => {
         console.log("focusin triggered")
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            // if a new focusin occured, don't forget to clean the copy of the last input to avoid timeout callback focusing on the last inupt
+            activeInputCopy = null;
             activeInput = e.target;
             //  vimMode = 'insert';
             //  updateIndicator();
