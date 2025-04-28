@@ -8,3 +8,11 @@ A tampermonkey plugin that let you jump word on html input like vim.
 | b        | [command] word jumping, backward(<-) |
 | h        | [command] single step move left      |
 | l        | [command] single step move right     |
+
+Insert mode:
+
+![](./images/pictures__insert-mode.png)
+
+Command mode:
+
+![](./images/pictures__command-mode.png)
